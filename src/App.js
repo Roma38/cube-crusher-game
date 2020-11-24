@@ -19,6 +19,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('results', JSON.stringify(results));
   }, [results]);
+  
+  const stopTimer = useCallback(() => {
+    setIsTimerOn(false);
+    clearInterval(timer);
+  }, [timer])
 
   useEffect(() => {
     if (!time) {
@@ -29,12 +34,7 @@ function App() {
       setIsGameStarted(false);
       console.log('Game Over!!!');
     }
-  }, [time]);
-
-  const stopTimer = () => {
-    setIsTimerOn(false);
-    clearInterval(timer);
-  }
+  }, [time, stopTimer]); 
 
   const toggleTimer = () => {
     if (isTimerOn) {
@@ -86,7 +86,7 @@ function App() {
         style={{ top: cube.top, left: cube.left, backgroundColor: cube.color, ...CUBE_SIZE }}
         className="cube"
         color={cube.color}
-        onMouseDown={() => cubeClickHandler(index)}
+        onMouseDown={() => cubeClickHandler(index)} // удобней кликать по блокам чем при onClick
       />)}
     </main>
 
